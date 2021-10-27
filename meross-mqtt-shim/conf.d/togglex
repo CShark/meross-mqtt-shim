@@ -1,0 +1,3 @@
+﻿.namespace = Appliance.Control.ToggleX
+channel = 0
+onoff = 0

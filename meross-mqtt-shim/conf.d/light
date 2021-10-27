@@ -1,0 +1,6 @@
+﻿.namespace = Appliance.Control.Light
+channel = 0
+luminance = 1
+temperature = 1
+rgb = 0
+transform = 1
