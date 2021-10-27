@@ -74,9 +74,9 @@ namespace meross_mqtt_shim {
                 if (config.ContainsKey("verifycert"))
                     options.VerifyCert = config["verifycert"].ToLower() != "false";
                 if (config.ContainsKey("mqttroot"))
-                    options.MqttRoot = config["mqttroot"];
+                    options.MqttRoot = config["mqttroot"].TrimEnd('/') + '/';
                 if (config.ContainsKey("merossroot"))
-                    options.MerossRoot = config["merossroot"];
+                    options.MerossRoot = config["merossroot"].TrimEnd('/') + '/';
 
                 var configDir = Path.Combine(options.ConfigDir, "conf.d");
                 if (Directory.Exists(configDir)) {
@@ -183,7 +183,7 @@ namespace meross_mqtt_shim {
 
             client.UseConnectedHandler(async args => {
                 Console.WriteLine("Connected with broker");
-                
+
                 await client.SubscribeAsync(new TopicFilterBuilder().WithTopic($"{_options.MqttRoot}#").Build());
             });
 
@@ -209,11 +209,9 @@ namespace meross_mqtt_shim {
                 var data = parts[2];
                 var channel = 0;
 
-                if (payloadGroup == "light") {
-                    if (parts.Length > 3) {
-                        if (Int32.TryParse(parts[2], out channel)) {
-                            data = parts[3];
-                        }
+                if (parts.Length > 3) {
+                    if (Int32.TryParse(parts[2], out channel)) {
+                        data = parts[3];
                     }
                 }
 
@@ -241,7 +239,7 @@ namespace meross_mqtt_shim {
                 // update data in cache
                 var messagePayload = Encoding.ASCII.GetString(args.ApplicationMessage.Payload);
                 _cache[deviceId][payloadGroup][data] = TryParseValue(messagePayload);
-                
+
                 var merossPath = _options.MerossRoot + deviceId + "/subscribe";
 
                 var message = new MerossData();
@@ -267,8 +265,10 @@ namespace meross_mqtt_shim {
                     message.payload[payloadGroup][entry.Key] = entry.Value;
                 }
 
+
+                message.payload[payloadGroup]["channel"] = channel;
+
                 if (payloadGroup == "light") {
-                    message.payload[payloadGroup]["channel"] = channel;
                     var mode = 0;
 
                     switch (data) {
