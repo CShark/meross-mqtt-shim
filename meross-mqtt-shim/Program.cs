@@ -253,7 +253,7 @@ namespace meross_mqtt_shim {
 
                 message.header.messageId = "message" + (DateTime.Now.Ticks / 10000);
                 message.header.from = _options.MqttRoot + deviceId + "/ack";
-                message.header.timestamp = (int) (DateTime.Now.Ticks / 10000 / 10);
+                message.header.timestamp = ((DateTimeOffset) DateTime.Now).ToUnixTimeSeconds();
                 message.header.sign =
                     MD5.HashData(Encoding.ASCII.GetBytes(message.header.messageId + message.header.timestamp))
                         .Select(x => x.ToString("x2")).Aggregate("", (s, s1) => s + s1);

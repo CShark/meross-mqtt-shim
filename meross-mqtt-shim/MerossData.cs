@@ -16,7 +16,7 @@ namespace meross_mqtt_shim {
             public string method { get; set; } = "SET";
             public int payloadVersion { get; set; } = 1;
             public string from { get; set; }
-            public int timestamp { get; set; }
+            public long timestamp { get; set; }
             public string sign { get; set; }
         }
     }
