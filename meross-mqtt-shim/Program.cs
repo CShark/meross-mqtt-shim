@@ -273,10 +273,10 @@ namespace meross_mqtt_shim {
 
                     switch (data) {
                         case "rgb":
-                            mode |= 1;
+                            mode |= 1  | 4;
                             break;
                         case "temperature":
-                            mode |= 2;
+                            mode |= 2 | 4;
                             break;
                         case "luminance":
                             mode |= 4;

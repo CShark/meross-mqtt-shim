@@ -63,7 +63,7 @@ user =
 password = 
 
 # The mqtt topic to which the shim will listen to. May or may not have a trailing /
-mqttRoot = shim/meros/
+mqttRoot = shim/meross/
 ```
 
 ## Payloads
