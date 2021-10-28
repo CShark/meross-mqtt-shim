@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Security.Authentication;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using CommandLine;
 using MQTTnet;
@@ -193,6 +194,7 @@ namespace meross_mqtt_shim {
             Task.Run(() => client.ConnectAsync(clientConfig));
 
             while (true) {
+                Thread.Sleep(5000);
             }
         }
 
